@@ -1,9 +1,10 @@
 /** @format */
 
 import "./App.css";
+import Universities from "./pages/universitiesPage/universities";
 
 function App() {
-	return <h1>Hello World</h1>;
+	return <Universities />;
 }
 
 export default App;
