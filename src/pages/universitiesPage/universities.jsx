@@ -8,6 +8,7 @@ import University from "../../components/universityCard/university";
 import { Countries } from "../../data/countries";
 import { Courses } from "../../data/courses";
 import { uinversityData } from "../../data/sample_university_info";
+import { UniversityType } from "../../data/university_type";
 
 function Universities() {
 	return (
@@ -32,6 +33,7 @@ function Universities() {
 			<Stack direction={"row"} alignItems={"center"}>
 				<SelectFilter list={Countries} title={"Country"} />
 				<SelectFilter list={Courses} title={"Courses"} />
+				<SelectFilter list={UniversityType} title={"University Type"} />
 			</Stack>
 			<Grid container spacing={5} sx={{ marginTop: "35px" }}>
 				{uinversityData.map((uni) => (
