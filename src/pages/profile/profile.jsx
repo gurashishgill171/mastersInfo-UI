@@ -7,6 +7,8 @@ import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { UniversityApplications } from "../../data/university_applications";
 import Status from "../../components/status/status";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { ProfileDetails } from "../../data/profile_details";
+import ProfileDetailCard from "../../components/profileDetail/profileDetailCard";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -112,8 +114,10 @@ function Profile() {
 					</Stack>
 				</Stack>
 			</Stack>
-			<Stack sx={{ flex: 0.6, border: "1px solid red" }}>
-				<h1>Right side</h1>
+			<Stack gap={8} sx={{ flex: 0.6 }}>
+				{ProfileDetails.map((detail) => (
+					<ProfileDetailCard profile={detail} />
+				))}
 			</Stack>
 		</Container>
 	);
