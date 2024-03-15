@@ -17,6 +17,13 @@ export const ProfileDetails = [
 				style={{ height: "50px", width: "50px" }}
 			/>
 		),
+		details: {
+			cgpa: 8.6,
+			university: "Thapar University",
+			isGraduate: false,
+			course: "Computer Science",
+			backlogs: 0,
+		},
 	},
 	{
 		id: 2,

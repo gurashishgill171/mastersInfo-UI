@@ -3,6 +3,7 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
+import EducationDetail from "./educationDetail";
 
 function ProfileDetailCard({ profile }) {
 	return (
@@ -48,7 +49,11 @@ function ProfileDetailCard({ profile }) {
 					width: "100%",
 				}}
 			/>
-			<Stack></Stack>
+			<Stack p={4}>
+				{profile.title == "Educational Details" && (
+					<EducationDetail details={profile.details} />
+				)}
+			</Stack>
 		</Stack>
 	);
 }
