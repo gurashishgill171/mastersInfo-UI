@@ -5,10 +5,18 @@ import React, { useState } from "react";
 import { MOBILE_INPUT } from "../../helpers/constants";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import PrimaryButton from "../common/primaryButton";
+import axios from "axios";
+import ErrorAlert from "../common/error";
 
-function Login({ handleShowOtp }) {
+function Register({ handleShowOtp }) {
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [phoneNumberError, setPhoneNumberError] = useState(false);
+	const [errorPopup, setErrorPopup] = useState(false);
+	const [apiError, setApiError] = useState("");
+
+	const handleCloseErrorAlert = () => {
+		setErrorPopup(false);
+	};
 
 	const handlePhoneNumber = (newValue) => {
 		setPhoneNumber(newValue);
@@ -16,8 +24,16 @@ function Login({ handleShowOtp }) {
 		else setPhoneNumberError(true);
 	};
 
-	const handleRequestOtp = () => {
-		handleShowOtp();
+	const handleRequestOtp = async () => {
+		try {
+			const res = await axios.post("http://localhost:6001/auth/register", {
+				phoneNumber,
+			});
+			handleShowOtp();
+		} catch (error) {
+			setErrorPopup(true);
+			setApiError(error.message);
+		}
 	};
 
 	return (
@@ -41,8 +57,15 @@ function Login({ handleShowOtp }) {
 				isDisabled={phoneNumberError}
 				handleClick={handleRequestOtp}
 			/>
+			{errorPopup && (
+				<ErrorAlert
+					open={errorPopup}
+					handleClose={handleCloseErrorAlert}
+					message={apiError}
+				/>
+			)}
 		</form>
 	);
 }
 
-export default Login;
+export default Register;

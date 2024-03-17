@@ -3,7 +3,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-function PrimaryButton({ title, isDisabled }) {
+function PrimaryButton({ title, isDisabled, handleClick }) {
 	return (
 		<Button
 			disabled={isDisabled}
@@ -13,7 +13,11 @@ function PrimaryButton({ title, isDisabled }) {
 				width: "100%",
 				fontSize: "18px",
 				backgroundColor: "#E37712",
+				":hover": {
+					bgcolor: "#E37712",
+				},
 			}}
+			onClick={handleClick}
 		>
 			{title}
 		</Button>

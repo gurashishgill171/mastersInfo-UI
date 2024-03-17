@@ -24,3 +24,8 @@ export const SIGNUP_SUBTITLE =
 // Login
 export const LOGIN_TITLE = "We’re glad you’re back!";
 export const LOGIN_SUBTITLE = "Login to continue your study abroad journey!";
+
+// VerifyOTP
+export const VERIFYOTP_TITLE = "Mobile Verification";
+export const VERIFYOTP_SUBTITLE = "We have sent a code to ";
+export const VERIFYOTP_BUTTON_TITLE = "Verfiy and Proceed";
