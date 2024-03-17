@@ -13,6 +13,8 @@ export const COVER_POINT4 =
 
 // Form
 export const MOBILE_INPUT = "Enter your Mobile number";
+export const MOBILE_NUMBER_ERROR =
+	"Your mobile number doesn’t seem right to us!";
 
 // Signup
 export const SIGNUP_TITLE = "Welcome to TrueGrad!";

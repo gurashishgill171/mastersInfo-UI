@@ -21,6 +21,7 @@ function CustomTabPanel(props) {
 			id={`simple-tabpanel-${index}`}
 			aria-labelledby={`simple-tab-${index}`}
 			{...other}
+			style={{ paddingTop: "2rem" }}
 		>
 			{value === index && <div>{children}</div>}
 		</div>
@@ -54,14 +55,26 @@ function LoginPage() {
 						{tabValue === 0 ? LOGIN_SUBTITLE : SIGNUP_SUBTITLE}
 					</Typography>
 				</Stack>
-				<Stack sx={{ paddingTop: "2.5rem" }}>
+				<Stack
+					sx={{
+						padding: "2.5rem 5rem 5rem 0rem",
+					}}
+				>
 					<Tabs
 						value={tabValue}
 						onChange={handleTabChange}
 						aria-label="basic tabs example"
 					>
-						<Tab label="Login" {...a11yProps(0)} />
-						<Tab label="Sign up" {...a11yProps(1)} />
+						<Tab
+							sx={{ fontSize: "18px", textTransform: "inherit" }}
+							label="Login"
+							{...a11yProps(0)}
+						/>
+						<Tab
+							sx={{ fontSize: "18px", textTransform: "inherit" }}
+							label="Sign up"
+							{...a11yProps(1)}
+						/>
 					</Tabs>
 					<CustomTabPanel value={tabValue} index={0}>
 						<Login />
