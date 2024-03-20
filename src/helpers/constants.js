@@ -29,3 +29,12 @@ export const LOGIN_SUBTITLE = "Login to continue your study abroad journey!";
 export const VERIFYOTP_TITLE = "Mobile Verification";
 export const VERIFYOTP_SUBTITLE = "We have sent a code to ";
 export const VERIFYOTP_BUTTON_TITLE = "Verfiy and Proceed";
+
+// Basic Details form
+export const BASIC_DETAILS_TITLE = "Hi, let's begin!";
+export const BASIC_DETAILS_SUBTITLE =
+	"It's a one time set up, takes less than 1 min, promise";
+export const EMAIL = "Email ID";
+export const EMAIL_EXAMPLE = "eg: example@gmail.com";
+export const DEGREE_PLAN = "Degree you're planning for";
+export const COURSE_INTEREST = "Courses of interest";

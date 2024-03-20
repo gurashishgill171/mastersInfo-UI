@@ -7,8 +7,10 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import PrimaryButton from "../common/primaryButton";
 import axios from "axios";
 import ErrorAlert from "../common/error";
+import { useNavigate } from "react-router-dom";
 
 function VerifyOTP({ phoneNumber }) {
+	const navigate = useNavigate();
 	const [otp, setOtp] = useState("");
 	const [isOtpCorrect, setIsOtpCorrect] = useState(false);
 	const [errorPopup, setErrorPopup] = useState(false);
@@ -32,6 +34,7 @@ function VerifyOTP({ phoneNumber }) {
 			const res = await axios.post("http://localhost:6001/auth/verifyOTP", {
 				otp,
 			});
+			navigate("/profile");
 		} catch (error) {
 			setErrorPopup(true);
 			setApiError(error.message);
