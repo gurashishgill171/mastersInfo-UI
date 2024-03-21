@@ -10,7 +10,7 @@ function PrimaryButton({ title, isDisabled, handleClick }) {
 			variant="contained"
 			sx={{
 				textTransform: "inherit",
-				width: "100%",
+				width: "max-content",
 				fontSize: "18px",
 				backgroundColor: "#E37712",
 				":hover": {

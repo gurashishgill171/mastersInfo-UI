@@ -9,8 +9,13 @@ import {
 	RadioGroup,
 	FormControlLabel,
 	Radio,
+	Select,
+	OutlinedInput,
+	Box,
+	Chip,
+	MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import {
 	BASIC_DETAILS_SUBTITLE,
 	BASIC_DETAILS_TITLE,
@@ -18,9 +23,23 @@ import {
 	DEGREE_PLAN,
 	EMAIL,
 	EMAIL_EXAMPLE,
+	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import bachelorsImage from "../../assets/bachelors.png";
 import mastersImage from "../../assets/masters.png";
+import { Courses } from "../../data/courses";
+import PrimaryButton from "../common/primaryButton";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+	PaperProps: {
+		style: {
+			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			width: 250,
+		},
+	},
+};
 
 function DegreeName({ image, name }) {
 	return (
@@ -43,19 +62,34 @@ function DegreeName({ image, name }) {
 	);
 }
 
+function getStyles(name, personName) {
+	return {
+		fontWeight: personName.indexOf(name) === -1 ? 300 : 500,
+	};
+}
+
 function BasicDetails() {
+	const [interestedCourses, setInterestedCourses] = useState([]);
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setInterestedCourses(typeof value === "string" ? value.split(",") : value);
+	};
 	return (
 		<Stack
 			sx={{
 				display: "flex",
 				alignItems: "center",
-				minHeight: "90vh",
 			}}
 		>
 			<Stack
 				sx={{
 					maxWidth: "1240px",
+					marginTop: "5rem",
 					width: "100%",
+					height: "100%",
+					gap: "2rem",
 				}}
 			>
 				<Stack>
@@ -69,13 +103,13 @@ function BasicDetails() {
 				<Divider />
 				<Stack>
 					<form>
-						<Stack>
+						<Stack sx={{ gap: "3rem" }}>
 							<TextField
 								variant="outlined"
 								label={EMAIL}
 								placeholder={EMAIL_EXAMPLE}
 							/>
-							<Stack sx={{ width: "100%" }}>
+							<Stack sx={{ width: "100%", gap: "1rem" }}>
 								<FormLabel
 									id="degree-plan"
 									sx={{ fontSize: "20px", fontWeight: 600 }}
@@ -123,18 +157,59 @@ function BasicDetails() {
 									/>
 								</RadioGroup>
 							</Stack>
-							<Stack>
+							<Stack sx={{ gap: "1rem" }}>
 								<FormLabel
 									id="course-interest"
 									sx={{ fontSize: "20px", fontWeight: 600 }}
 								>
 									{COURSE_INTEREST}
 								</FormLabel>
+								<Select
+									labelId="course-interest"
+									id="demo-multiple-chip"
+									multiple
+									value={interestedCourses}
+									onChange={handleChange}
+									input={<OutlinedInput id="select-multiple-chip" />}
+									renderValue={(selected) => (
+										<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+											{selected.map((value) => (
+												<Chip key={value} label={value} />
+											))}
+										</Box>
+									)}
+									MenuProps={MenuProps}
+								>
+									{Courses.map((course) => (
+										<MenuItem
+											key={course.id}
+											value={course.value}
+											style={getStyles(course.value, interestedCourses)}
+										>
+											{course.value}
+										</MenuItem>
+									))}
+								</Select>
+							</Stack>
+							<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
+								<PrimaryButton title={NEXT_BUTTON_TITLE} />
 							</Stack>
 						</Stack>
 					</form>
 				</Stack>
 			</Stack>
+			{/* <Stack
+				sx={{
+					width: "100%",
+					position: "absolute",
+					bottom: "0",
+					borderTop: "0.1px solid #697386",
+				}}
+			>
+				<Stack sx={{ position: "absolute", right: "0", padding: "1.5rem" }}>
+					<PrimaryButton title={"Proceed To Next"} />
+				</Stack>
+			</Stack> */}
 		</Stack>
 	);
 }

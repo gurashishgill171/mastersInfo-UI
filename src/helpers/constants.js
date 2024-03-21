@@ -38,3 +38,4 @@ export const EMAIL = "Email ID";
 export const EMAIL_EXAMPLE = "eg: example@gmail.com";
 export const DEGREE_PLAN = "Degree you're planning for";
 export const COURSE_INTEREST = "Courses of interest";
+export const NEXT_BUTTON_TITLE = "Proceed To Next";

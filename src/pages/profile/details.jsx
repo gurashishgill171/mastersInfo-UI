@@ -7,7 +7,7 @@ import DetailsSteps from "../../components/profileDetail/stepper";
 
 function ProfileDetails() {
 	return (
-		<Stack sx={{}}>
+		<Stack sx={{ minHeight: "100vh" }}>
 			<DetailsSteps />
 			<Stack sx={{}}>
 				<BasicDetails />
