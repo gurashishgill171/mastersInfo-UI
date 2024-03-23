@@ -1,7 +1,7 @@
 /** @format */
 
 import { Stepper, Step, StepLabel } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Steps } from "../../data/steps";
 import { styled } from "@mui/material/styles";
 import StepConnector, {
@@ -68,9 +68,13 @@ function QontoStepIcon(props) {
 	);
 }
 
-function DetailsSteps() {
+function DetailsSteps({currentStep}) {
 	return (
-		<Stepper alternativeLabel activeStep={0} connector={<QontoConnector />}>
+		<Stepper
+			alternativeLabel
+			activeStep={currentStep}
+			connector={<QontoConnector />}
+		>
 			{Steps.map((step) => (
 				<Step key={step.id}>
 					<StepLabel StepIconComponent={QontoStepIcon}>{step.title}</StepLabel>
