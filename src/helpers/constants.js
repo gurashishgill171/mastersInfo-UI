@@ -46,3 +46,25 @@ export const INTAKE_DETAILS_SUBTITLE =
 	"Quick as a cat! You're faster than the average time taken";
 export const START_YEAR = "Year you plan to start studying";
 export const START_INTAKE = "Intake you plan to start studying";
+export const COUNTRIES = "Countries you aspire to study in";
+
+// current stage form
+export const CURRENT_STAGE_TITLE = "Your current stage?";
+export const CURRENT_STAGE_SUBTITLE =
+	"Kudos! Estimated time for setup completion: 12 seconds";
+export const STUDY_PHASE = "Where are you in your study abroad journey?";
+
+// ug details form
+export const UG_DETAILS_TITLE = "All about your undergrad";
+export const UG_DETAILS_SUBTITLE =
+	"Get faster and more accurate university finding results by adding UG details";
+export const COLLEGE_NAME = "College name";
+export const COLLEGE_EXAMPLE = "Search College";
+export const COURSE_NAME = "Course name";
+export const COURSE_EXAMPLE = "Search Course";
+export const SCORE = "Score";
+export const SCORE_EXAMPLE = "Add total GPA / CGPA / %";
+export const GRAD_YEAR = "Graduation year";
+export const GRAD_EXAMPLE = "Enter your graduation year";
+export const BACKLOGS = "Backlogs";
+export const BACKLOGS_EXAMPLE = "e.g: 0";

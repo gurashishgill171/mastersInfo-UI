@@ -1,7 +1,8 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import {
+	COUNTRIES,
 	INTAKE_DETAILS_SUBTITLE,
 	INTAKE_DETAILS_TITLE,
 	START_INTAKE,
@@ -15,11 +16,28 @@ import {
 	Radio,
 	FormControlLabel,
 	RadioGroup,
+	OutlinedInput,
+	Box,
+	Chip,
+	Select,
+	MenuItem,
 } from "@mui/material";
 import FallImage from "../../assets/fall.png";
 import SpringImage from "../../assets/spring.png";
 import SummerImage from "../../assets/summer.png";
 import WinterImage from "../../assets/winter.png";
+import { Countries } from "../../data/countries";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+	PaperProps: {
+		style: {
+			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			width: 250,
+		},
+	},
+};
 
 function Year({ year }) {
 	return (
@@ -42,8 +60,20 @@ function Intake({ image, season }) {
 		</Stack>
 	);
 }
+function getStyles(name, personName) {
+	return {
+		fontWeight: personName.indexOf(name) === -1 ? 300 : 500,
+	};
+}
 
 function IntakeDetails() {
+	const [countries, setCountries] = useState([]);
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setCountries(typeof value === "string" ? value.split(",") : value);
+	};
 	return (
 		<>
 			<Stack>
@@ -180,96 +210,51 @@ function IntakeDetails() {
 								/>
 							</RadioGroup>
 						</Stack>
-						{/* <TextField
-								variant="outlined"
-								label={EMAIL}
-								placeholder={EMAIL_EXAMPLE}
-							/>
-							<Stack sx={{ width: "100%", gap: "1rem" }}>
-								<FormLabel
-									id="degree-plan"
-									sx={{ fontSize: "20px", fontWeight: 600 }}
-								>
-									{DEGREE_PLAN}
-								</FormLabel>
-								<RadioGroup
-									row
-									aria-labelledby="degree-plan"
-									defaultValue="female"
-									name="radio-buttons-group"
-									sx={{
-										alignItems: "center",
-										justifyContent: "space-between",
-										gap: "20px",
-									}}
-								>
-									<FormControlLabel
-										value="bachelors"
-										control={<Radio icon={<></>} checkedIcon={<></>} />}
-										label={
-											<DegreeName name={"Bachelor's"} image={bachelorsImage} />
-										}
+
+						<Stack sx={{ gap: "1rem" }}>
+							<FormLabel
+								id="course-interest"
+								sx={{ fontSize: "20px", fontWeight: 600 }}
+							>
+								{COUNTRIES}
+							</FormLabel>
+							<Select
+								labelId="countries-interest"
+								id="demo-multiple-chip"
+								multiple
+								value={countries}
+								onChange={handleChange}
+								input={<OutlinedInput id="select-multiple-chip" />}
+								renderValue={(selected) => (
+									<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+										{selected.map((value) => (
+											<Chip key={value} label={value} />
+										))}
+									</Box>
+								)}
+								MenuProps={MenuProps}
+							>
+								{Countries.map((country) => (
+									<MenuItem
+										key={country.id}
+										value={country.value}
+										style={getStyles(country.value, countries)}
 										sx={{
-											flex: 0.5,
-											border: "1px solid #000000",
-											borderRadius: "12px",
-											padding: "10px 5px 10px 5px",
-											justifyContent: "center",
+											display: "flex",
+											alignItems: "center",
+											gap: "1rem",
 										}}
-									/>
-									<FormControlLabel
-										value="masters"
-										control={<Radio icon={<></>} checkedIcon={<></>} />}
-										label={
-											<DegreeName name={"Master's"} image={mastersImage} />
-										}
-										sx={{
-											flex: 0.5,
-											border: "1px solid #000000",
-											borderRadius: "12px",
-											padding: "10px 5px 10px 5px",
-											justifyContent: "center",
-										}}
-									/>
-								</RadioGroup>
-							</Stack>
-							<Stack sx={{ gap: "1rem" }}>
-								<FormLabel
-									id="course-interest"
-									sx={{ fontSize: "20px", fontWeight: 600 }}
-								>
-									{COURSE_INTEREST}
-								</FormLabel>
-								<Select
-									labelId="course-interest"
-									id="demo-multiple-chip"
-									multiple
-									value={interestedCourses}
-									onChange={handleChange}
-									input={<OutlinedInput id="select-multiple-chip" />}
-									renderValue={(selected) => (
-										<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-											{selected.map((value) => (
-												<Chip key={value} label={value} />
-											))}
-										</Box>
-									)}
-									MenuProps={MenuProps}
-								>
-									{Courses.map((course) => (
-										<MenuItem
-											key={course.id}
-											value={course.value}
-											style={getStyles(course.value, interestedCourses)}
-										>
-											{course.value}
-										</MenuItem>
-									))}
-								</Select>
-							</Stack>
-							<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
-								<PrimaryButton title={NEXT_BUTTON_TITLE} />
-							</Stack> */}
+									>
+										<img
+											src={country.flag}
+											alt={country.value}
+											style={{ height: "30px", width: "30px" }}
+										/>
+										<Typography variant="subtitle1">{country.value}</Typography>
+									</MenuItem>
+								))}
+							</Select>
+						</Stack>
 					</Stack>
 				</form>
 			</Stack>

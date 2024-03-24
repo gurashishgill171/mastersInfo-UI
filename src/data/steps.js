@@ -10,16 +10,8 @@ export const Steps = [
 		title: "Intake",
 	},
 	{
-		id: 3,
-		title: "Country",
-	},
-	{
 		id: 4,
 		title: "Current Stage",
-	},
-	{
-		id: 5,
-		title: "GRE Preperation",
 	},
 	{
 		id: 6,

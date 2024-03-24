@@ -4,8 +4,10 @@ import { Stack } from "@mui/material";
 import React, { useState } from "react";
 import PrimaryButton from "../../components/common/primaryButton";
 import BasicDetails from "../../components/profileDetail/basicDetails";
+import CurrentStage from "../../components/profileDetail/currentStage";
 import IntakeDetails from "../../components/profileDetail/intakeDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
+import UGDetails from "../../components/profileDetail/ugDetails";
 import { NEXT_BUTTON_TITLE } from "../../helpers/constants";
 
 const renderForm = (currentStep) => {
@@ -14,6 +16,10 @@ const renderForm = (currentStep) => {
 			return <BasicDetails />;
 		case 1:
 			return <IntakeDetails />;
+		case 2:
+			return <CurrentStage />;
+		case 3:
+			return <UGDetails />;
 		default:
 			break;
 	}
@@ -38,6 +44,7 @@ function ProfileDetails() {
 					sx={{
 						maxWidth: "1240px",
 						marginTop: "5rem",
+						marginBottom: "5rem",
 						width: "100%",
 						height: "100%",
 						gap: "2rem",
