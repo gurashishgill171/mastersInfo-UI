@@ -68,3 +68,15 @@ export const GRAD_YEAR = "Graduation year";
 export const GRAD_EXAMPLE = "Enter your graduation year";
 export const BACKLOGS = "Backlogs";
 export const BACKLOGS_EXAMPLE = "e.g: 0";
+
+// english scores form
+export const ENGLISH_SCORES_TITLE = "Talk about your English Edge";
+export const ENGLISH_SCORES_SUBTITLE =
+	"Get a close enough university admit prediction by adding your English test scores.";
+export const COMPOSITE_SCORE = "Composite Score";
+export const READING = "Reading";
+export const WRITING = "Writing";
+export const LISTENING = "Listening";
+export const SPEAKING = "Speaking";
+export const TESTDATE_TITLE = "Date you appeared for the test";
+export const TESTDATE_EXAMPLE = "Select a Date";
