@@ -15,6 +15,12 @@ import {
 	CURRENT_STAGE_TITLE,
 	STUDY_PHASE,
 } from "../../helpers/constants";
+import ResearchImage from "../../assets/research.png";
+import ListImage from "../../assets/list.png";
+import TestsDoneImage from "../../assets/testdone.png";
+import AppliedImage from "../../assets/applied.png";
+import WaitingImage from "../../assets/waiting.png";
+import AdmittedImage from "../../assets/admitted.png";
 
 function Stage({ image, title }) {
 	return (
@@ -67,7 +73,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={ResearchImage}
 											title={
 												<>
 													Just starting,
@@ -90,7 +96,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={ListImage}
 											title={
 												<>
 													Shortlisting universities,
@@ -113,7 +119,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={TestsDoneImage}
 											title={
 												<>
 													Tests done,
@@ -136,7 +142,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={AppliedImage}
 											title={
 												<>
 													Applied to a few
@@ -159,7 +165,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={WaitingImage}
 											title={
 												<>
 													Applications done,
@@ -182,7 +188,7 @@ function CurrentStage() {
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={
 										<Stage
-											image={""}
+											image={AdmittedImage}
 											title={
 												<>
 													Admits

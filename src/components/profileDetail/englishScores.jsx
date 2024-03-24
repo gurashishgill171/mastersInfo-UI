@@ -118,7 +118,7 @@ function ScoreForm({ type, maxScore, maxIndividualScore }) {
 }
 
 function EnglishScores() {
-	const [examType, setExamType] = React.useState("");
+	const [examType, setExamType] = React.useState(0);
 
 	const handleChange = (event, newValue) => {
 		setExamType(newValue);
