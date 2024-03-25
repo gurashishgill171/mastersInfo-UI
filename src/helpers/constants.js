@@ -80,3 +80,12 @@ export const LISTENING = "Listening";
 export const SPEAKING = "Speaking";
 export const TESTDATE_TITLE = "Date you appeared for the test";
 export const TESTDATE_EXAMPLE = "Select a Date";
+
+// aptitude scores form
+export const APTITUDE_SCORES_TITLE = "Show off your aptitude advantage";
+export const APTITUDE_SCORES_SUBTITLE =
+	"Get a close enough university admit prediction by adding your Aptitude test scores.";
+export const GRE_VERBAL = "Verbal";
+export const GRE_QUANT = "Quants";
+export const GRE_AWA = "AWA";
+export const GRE_IR = "IR";

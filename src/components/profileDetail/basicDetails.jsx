@@ -23,12 +23,10 @@ import {
 	DEGREE_PLAN,
 	EMAIL,
 	EMAIL_EXAMPLE,
-	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import bachelorsImage from "../../assets/bachelors.png";
 import mastersImage from "../../assets/masters.png";
 import { Courses } from "../../data/courses";
-import PrimaryButton from "../common/primaryButton";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

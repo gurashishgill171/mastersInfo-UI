@@ -3,6 +3,7 @@
 import { Stack } from "@mui/material";
 import React, { useState } from "react";
 import PrimaryButton from "../../components/common/primaryButton";
+import AptitudeScores from "../../components/profileDetail/aptitudeScores";
 import BasicDetails from "../../components/profileDetail/basicDetails";
 import CurrentStage from "../../components/profileDetail/currentStage";
 import EnglishScores from "../../components/profileDetail/englishScores";
@@ -23,6 +24,8 @@ const renderForm = (currentStep) => {
 			return <UGDetails />;
 		case 4:
 			return <EnglishScores />;
+		case 5:
+			return <AptitudeScores />;
 		default:
 			break;
 	}

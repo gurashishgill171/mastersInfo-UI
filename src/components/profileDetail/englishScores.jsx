@@ -17,7 +17,6 @@ import {
 	LISTENING,
 	READING,
 	SPEAKING,
-	TESTDATE_EXAMPLE,
 	TESTDATE_TITLE,
 	WRITING,
 } from "../../helpers/constants";
@@ -35,12 +34,7 @@ function CustomTabPanel(props) {
 			aria-labelledby={`simple-tab-${index}`}
 			{...other}
 		>
-			{value === index && (
-				// <Box sx={{ p: 3 }}>
-				// 	<Typography>{children}</Typography>
-				// </Box>
-				<>{children}</>
-			)}
+			{value === index && <>{children}</>}
 		</div>
 	);
 }
