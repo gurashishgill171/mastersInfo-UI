@@ -2,6 +2,9 @@
 
 // Feeds Page
 export const ADD_FEED_TITLE = "Ask anything about studying abroad, ";
+export const ADD_FEED_POPUP_TITLE = "Create a post";
+export const ADD_FEED_POPUP_INPUT = "What do you want to discuss?";
+export const ADD_FEED_POPUP_DETAIL = "Explain your question in detail here...";
 
 // Cover Page
 export const COVER_TITLE = "A seamless journey to your dream university!";
