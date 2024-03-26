@@ -1,5 +1,8 @@
 /** @format */
 
+// Feeds Page
+export const ADD_FEED_TITLE = "Ask anything about studying abroad, ";
+
 // Cover Page
 export const COVER_TITLE = "A seamless journey to your dream university!";
 export const COVER_POINT1 =
@@ -89,3 +92,10 @@ export const GRE_VERBAL = "Verbal";
 export const GRE_QUANT = "Quants";
 export const GRE_AWA = "AWA";
 export const GRE_IR = "IR";
+
+// skills
+export const SKILLS_TITLE = "High on Skills!";
+export const SKILLS_SUBTITLE =
+	"Show your fellow aspirants that relevant skills are important for a profile to get an admit!";
+export const SKILLS_INPUT = "Skills";
+export const SKILLS_EXAMPLE = "E.g: Graphic Designer";

@@ -8,6 +8,7 @@ import BasicDetails from "../../components/profileDetail/basicDetails";
 import CurrentStage from "../../components/profileDetail/currentStage";
 import EnglishScores from "../../components/profileDetail/englishScores";
 import IntakeDetails from "../../components/profileDetail/intakeDetails";
+import SkillDetails from "../../components/profileDetail/skillDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
 import UGDetails from "../../components/profileDetail/ugDetails";
 import { NEXT_BUTTON_TITLE } from "../../helpers/constants";
@@ -26,6 +27,8 @@ const renderForm = (currentStep) => {
 			return <EnglishScores />;
 		case 5:
 			return <AptitudeScores />;
+		case 6:
+			return <SkillDetails />;
 		default:
 			break;
 	}
