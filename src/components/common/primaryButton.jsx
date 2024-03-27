@@ -3,10 +3,10 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-function PrimaryButton({ title, isDisabled, handleClick }) {
+function PrimaryButton({ title, isDisabled, handleClick, isLoading }) {
 	return (
 		<Button
-			disabled={isDisabled}
+			disabled={isDisabled || isLoading}
 			variant="contained"
 			sx={{
 				textTransform: "inherit",
@@ -19,7 +19,7 @@ function PrimaryButton({ title, isDisabled, handleClick }) {
 			}}
 			onClick={handleClick}
 		>
-			{title}
+			{!isLoading ? title : "LOADING..."}
 		</Button>
 	);
 }

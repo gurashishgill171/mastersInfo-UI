@@ -1,8 +1,9 @@
 /** @format */
 
 import { Stack } from "@mui/material";
-import React, { useState } from "react";
-import PrimaryButton from "../../components/common/primaryButton";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import AptitudeScores from "../../components/profileDetail/aptitudeScores";
 import BasicDetails from "../../components/profileDetail/basicDetails";
 import CurrentStage from "../../components/profileDetail/currentStage";
@@ -11,38 +12,46 @@ import IntakeDetails from "../../components/profileDetail/intakeDetails";
 import SkillDetails from "../../components/profileDetail/skillDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
 import UGDetails from "../../components/profileDetail/ugDetails";
-import { NEXT_BUTTON_TITLE } from "../../helpers/constants";
-
-const renderForm = (currentStep) => {
-	switch (currentStep) {
-		case 0:
-			return <BasicDetails />;
-		case 1:
-			return <IntakeDetails />;
-		case 2:
-			return <CurrentStage />;
-		case 3:
-			return <UGDetails />;
-		case 4:
-			return <EnglishScores />;
-		case 5:
-			return <AptitudeScores />;
-		case 6:
-			return <SkillDetails />;
-		default:
-			break;
-	}
-};
 
 function ProfileDetails() {
-	const [currentStep, setCurrentStep] = useState(0);
+	const navigate = useNavigate();
+	// const [currentStep, setCurrentStep] = useState(0);
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
 
-	const incrementStep = () => {
-		setCurrentStep(currentStep + 1);
+	// const incrementStep = () => {
+	// 	setCurrentStep(currentStep + 1);
+	// };
+
+	const renderForm = (currentStep) => {
+		switch (currentStep) {
+			case 0:
+				return <BasicDetails />;
+			case 1:
+				return <IntakeDetails />;
+			case 2:
+				return <CurrentStage />;
+			case 3:
+				return <UGDetails />;
+			case 4:
+				return <EnglishScores />;
+			case 5:
+				return <AptitudeScores />;
+			case 6:
+				return <SkillDetails />;
+			default:
+				break;
+		}
 	};
+
+	useEffect(() => {
+		if (!userInfo) {
+			navigate("/login");
+		}
+	}, []);
+
 	return (
 		<Stack sx={{ minHeight: "100vh" }}>
-			<DetailsSteps currentStep={currentStep} />
+			<DetailsSteps currentStep={userInfo && userInfo.currentStep} />
 			<Stack
 				sx={{
 					display: "flex",
@@ -59,13 +68,7 @@ function ProfileDetails() {
 						gap: "2rem",
 					}}
 				>
-					{renderForm(currentStep)}
-					<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
-						<PrimaryButton
-							title={NEXT_BUTTON_TITLE}
-							handleClick={incrementStep}
-						/>
-					</Stack>
+					{renderForm(userInfo && userInfo.currentStep)}
 				</Stack>
 			</Stack>
 		</Stack>

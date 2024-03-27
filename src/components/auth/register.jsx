@@ -13,6 +13,7 @@ function Register({ handleShowOtp }) {
 	const [phoneNumberError, setPhoneNumberError] = useState(false);
 	const [errorPopup, setErrorPopup] = useState(false);
 	const [apiError, setApiError] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleCloseErrorAlert = () => {
 		setErrorPopup(false);
@@ -25,6 +26,7 @@ function Register({ handleShowOtp }) {
 	};
 
 	const handleRequestOtp = async () => {
+		setLoading(true);
 		try {
 			const res = await axios.post("http://localhost:6001/auth/register", {
 				phoneNumber,
@@ -32,8 +34,9 @@ function Register({ handleShowOtp }) {
 			handleShowOtp();
 		} catch (error) {
 			setErrorPopup(true);
-			setApiError(error.message);
+			setApiError(error.response.data.error);
 		}
+		setLoading(false);
 	};
 
 	return (
@@ -56,6 +59,7 @@ function Register({ handleShowOtp }) {
 				title={"Request OTP"}
 				isDisabled={phoneNumberError}
 				handleClick={handleRequestOtp}
+				isLoading={loading}
 			/>
 			{errorPopup && (
 				<ErrorAlert

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./pages/auth/login";
 import ProfileDetails from "./pages/profile/details";
 import Feeds from "./pages/feeds/feeds";
+import Navbar from "./components/navbar/navbar";
 
 function App() {
 	return (

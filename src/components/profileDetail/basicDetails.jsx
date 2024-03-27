@@ -15,7 +15,7 @@ import {
 	Chip,
 	MenuItem,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	BASIC_DETAILS_SUBTITLE,
 	BASIC_DETAILS_TITLE,
@@ -23,10 +23,17 @@ import {
 	DEGREE_PLAN,
 	EMAIL,
 	EMAIL_EXAMPLE,
+	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import bachelorsImage from "../../assets/bachelors.png";
 import mastersImage from "../../assets/masters.png";
 import { Courses } from "../../data/courses";
+import PrimaryButton from "../common/primaryButton";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ErrorAlert from "../common/error";
+import { setCredentials } from "../../slices/authSlice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -67,13 +74,68 @@ function getStyles(name, personName) {
 }
 
 function BasicDetails() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
+	const [email, setEmail] = useState("");
+	const [degree, setDegree] = useState("masters");
 	const [interestedCourses, setInterestedCourses] = useState([]);
+	const [errors, setErrors] = useState({});
+	const [errorPopup, setErrorPopup] = useState(false);
+	const [apiError, setApiError] = useState("");
+
+	const handleCloseErrorAlert = () => {
+		setErrorPopup(false);
+	};
+
 	const handleChange = (event) => {
 		const {
 			target: { value },
 		} = event;
 		setInterestedCourses(typeof value === "string" ? value.split(",") : value);
 	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		const newErrors = {};
+		if (!email.trim()) {
+			newErrors.email = "Email is required";
+		}
+
+		if (interestedCourses.length == 0) {
+			newErrors.courses = "Please select atleast 1 course";
+		}
+
+		if (interestedCourses.length > 3) {
+			newErrors.courses = "Select upto 3 courses";
+		}
+
+		if (Object.keys(newErrors).length === 0) {
+			try {
+				const res = await axios.post("http://localhost:6001/auth/save", {
+					phoneNumber: userInfo && userInfo.phoneNumber,
+					email: email,
+					isMasters: degree == "masters" ? true : false,
+					interestedCourses: interestedCourses,
+					currentStep: userInfo && userInfo.currentStep + 1,
+				});
+				dispatch(setCredentials(res.data.user));
+			} catch (error) {
+				setErrorPopup(true);
+				setApiError(error.response.data.error);
+			}
+		} else {
+			setErrors(newErrors);
+		}
+	};
+
+	useEffect(() => {
+		if (!userInfo) {
+			navigate("/login");
+		}
+	}, []);
+
 	return (
 		<>
 			<Stack>
@@ -92,6 +154,10 @@ function BasicDetails() {
 							variant="outlined"
 							label={EMAIL}
 							placeholder={EMAIL_EXAMPLE}
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							error={Boolean(errors.email)}
+							helperText={errors.email && errors.email}
 						/>
 						<Stack sx={{ width: "100%", gap: "1rem" }}>
 							<FormLabel
@@ -104,11 +170,14 @@ function BasicDetails() {
 								row
 								aria-labelledby="degree-plan"
 								defaultValue="female"
-								name="radio-buttons-group"
+								name="degree-plan-group"
+								value={degree}
+								onChange={(e) => setDegree(e.target.value)}
 								sx={{
 									alignItems: "center",
 									justifyContent: "space-between",
 									gap: "20px",
+									paddingLeft: "0.8rem",
 								}}
 							>
 								<FormControlLabel
@@ -123,6 +192,8 @@ function BasicDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											degree == "bachelors" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
@@ -135,20 +206,22 @@ function BasicDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											degree == "masters" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 							</RadioGroup>
 						</Stack>
-						<Stack sx={{ gap: "1rem" }}>
+						<Stack>
 							<FormLabel
 								id="course-interest"
-								sx={{ fontSize: "20px", fontWeight: 600 }}
+								sx={{ fontSize: "20px", fontWeight: 600, marginBottom: "1rem" }}
 							>
 								{COURSE_INTEREST}
 							</FormLabel>
 							<Select
 								labelId="course-interest"
-								id="demo-multiple-chip"
+								id="course-interest-select"
 								multiple
 								value={interestedCourses}
 								onChange={handleChange}
@@ -161,6 +234,7 @@ function BasicDetails() {
 									</Box>
 								)}
 								MenuProps={MenuProps}
+								error={Boolean(errors.courses)}
 							>
 								{Courses.map((course) => (
 									<MenuItem
@@ -172,9 +246,17 @@ function BasicDetails() {
 									</MenuItem>
 								))}
 							</Select>
+							{errors.courses && (
+								<Typography variant="caption" sx={{ color: "#d32f2f" }}>
+									{errors.courses}
+								</Typography>
+							)}
 						</Stack>
 					</Stack>
 				</form>
+			</Stack>
+			<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
+				<PrimaryButton title={NEXT_BUTTON_TITLE} handleClick={handleSubmit} />
 			</Stack>
 		</>
 	);

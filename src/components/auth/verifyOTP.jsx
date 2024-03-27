@@ -1,15 +1,18 @@
 /** @format */
 
 import { Stack } from "@mui/material";
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { VERIFYOTP_BUTTON_TITLE } from "../../helpers/constants";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import PrimaryButton from "../common/primaryButton";
 import axios from "axios";
 import ErrorAlert from "../common/error";
 import { useNavigate } from "react-router-dom";
+import { setCredentials } from "../../slices/authSlice";
+import { useDispatch } from "react-redux";
 
 function VerifyOTP({ phoneNumber }) {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [otp, setOtp] = useState("");
 	const [isOtpCorrect, setIsOtpCorrect] = useState(false);
@@ -34,10 +37,11 @@ function VerifyOTP({ phoneNumber }) {
 			const res = await axios.post("http://localhost:6001/auth/verifyOTP", {
 				otp,
 			});
-			navigate("/profile");
+			dispatch(setCredentials(res.data));
+			navigate("/profile/details");
 		} catch (error) {
 			setErrorPopup(true);
-			setApiError(error.message);
+			setApiError(error.response.data.error);
 		}
 	};
 	return (
