@@ -1,12 +1,13 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	COUNTRIES,
 	INTAKE_DETAILS_SUBTITLE,
 	INTAKE_DETAILS_TITLE,
 	START_INTAKE,
 	START_YEAR,
+	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import {
 	Stack,
@@ -27,6 +28,11 @@ import SpringImage from "../../assets/spring.png";
 import SummerImage from "../../assets/summer.png";
 import WinterImage from "../../assets/winter.png";
 import { Countries } from "../../data/countries";
+import PrimaryButton from "../common/primaryButton";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../slices/authSlice";
+import axios from "axios";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -67,13 +73,63 @@ function getStyles(name, personName) {
 }
 
 function IntakeDetails() {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
+	const [studyYear, setStudyYear] = useState("2025");
+	const [studyIntake, setStudyIntake] = useState("fall");
 	const [countries, setCountries] = useState([]);
+	const [errors, setErrors] = useState({});
+	const [errorPopup, setErrorPopup] = useState(false);
+	const [apiError, setApiError] = useState("");
+
+	const handleCloseErrorAlert = () => {
+		setErrorPopup(false);
+	};
 	const handleChange = (event) => {
 		const {
 			target: { value },
 		} = event;
 		setCountries(typeof value === "string" ? value.split(",") : value);
 	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		const newErrors = {};
+
+		if (countries.length == 0) {
+			newErrors.countries = "Please select atleast 1 country";
+		}
+
+		if (countries.length > 3) {
+			newErrors.countries = "Select upto 2 countries";
+		}
+
+		if (Object.keys(newErrors).length === 0) {
+			try {
+				const res = await axios.post("http://localhost:6001/auth/save", {
+					phoneNumber: userInfo && userInfo.phoneNumber,
+					plannedYear: studyYear,
+					plannedIntake: studyIntake,
+					plannedCountries: countries,
+					currentStep: userInfo && userInfo.currentStep + 1,
+				});
+				dispatch(setCredentials(res.data.user));
+			} catch (error) {
+				setErrorPopup(true);
+				setApiError(error.response.data.error);
+			}
+		} else {
+			setErrors(newErrors);
+		}
+	};
+
+	useEffect(() => {
+		if (!userInfo) {
+			navigate("/login");
+		}
+	}, []);
 	return (
 		<>
 			<Stack>
@@ -98,12 +154,15 @@ function IntakeDetails() {
 							<RadioGroup
 								row
 								aria-labelledby="start-year"
-								defaultValue="female"
+								defaultValue="2025"
 								name="radio-buttons-group"
+								value={studyYear}
+								onChange={(e) => setStudyYear(e.target.value)}
 								sx={{
 									alignItems: "center",
 									justifyContent: "space-between",
 									gap: "20px",
+									paddingLeft: "0.8rem",
 								}}
 							>
 								<FormControlLabel
@@ -116,6 +175,8 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyYear == "2024" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
@@ -128,6 +189,8 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyYear == "2025" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
@@ -140,6 +203,8 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyYear == "2026" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 							</RadioGroup>
@@ -154,18 +219,21 @@ function IntakeDetails() {
 							<RadioGroup
 								row
 								aria-labelledby="start-intake"
-								defaultValue="female"
+								defaultValue="fall"
 								name="radio-buttons-group"
+								value={studyIntake}
+								onChange={(e) => setStudyIntake(e.target.value)}
 								sx={{
 									display: "grid",
 									gridTemplateColumns: "repeat(2, 1fr)",
 									alignItems: "center",
 									justifyContent: "space-between",
 									gap: "20px",
+									paddingLeft: "0.8rem",
 								}}
 							>
 								<FormControlLabel
-									value="bachelors"
+									value="fall"
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={<Intake season={"Fall"} image={FallImage} />}
 									sx={{
@@ -173,10 +241,12 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyIntake == "fall" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
-									value="masters"
+									value="spring"
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={<Intake season={"Spring"} image={SpringImage} />}
 									sx={{
@@ -184,10 +254,12 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyIntake == "spring" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
-									value="masters"
+									value="summer"
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={<Intake season={"Summer"} image={SummerImage} />}
 									sx={{
@@ -195,10 +267,12 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyIntake == "summer" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 								<FormControlLabel
-									value="masters"
+									value="winter"
 									control={<Radio icon={<></>} checkedIcon={<></>} />}
 									label={<Intake season={"Winter"} image={WinterImage} />}
 									sx={{
@@ -206,20 +280,22 @@ function IntakeDetails() {
 										borderRadius: "12px",
 										padding: "10px 5px 10px 5px",
 										justifyContent: "center",
+										backgroundColor:
+											studyIntake == "winter" ? "#F1F4F7" : "#FFFFFF",
 									}}
 								/>
 							</RadioGroup>
 						</Stack>
 
-						<Stack sx={{ gap: "1rem" }}>
+						<Stack>
 							<FormLabel
-								id="course-interest"
-								sx={{ fontSize: "20px", fontWeight: 600 }}
+								id="interested-country"
+								sx={{ fontSize: "20px", fontWeight: 600, marginBottom: "1rem" }}
 							>
 								{COUNTRIES}
 							</FormLabel>
 							<Select
-								labelId="countries-interest"
+								labelId="interested-country"
 								id="demo-multiple-chip"
 								multiple
 								value={countries}
@@ -254,9 +330,17 @@ function IntakeDetails() {
 									</MenuItem>
 								))}
 							</Select>
+							{errors.countries && (
+								<Typography variant="caption" sx={{ color: "#d32f2f" }}>
+									{errors.countries}
+								</Typography>
+							)}
 						</Stack>
 					</Stack>
 				</form>
+			</Stack>
+			<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
+				<PrimaryButton title={NEXT_BUTTON_TITLE} handleClick={handleSubmit} />
 			</Stack>
 		</>
 	);
