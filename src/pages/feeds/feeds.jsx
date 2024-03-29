@@ -1,16 +1,35 @@
 /** @format */
 
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AddFeedPopup from "../../components/feed/addFeedPopup";
 import Feed from "../../components/feed/feed";
 import { FeedsData } from "../../data/feeds";
 import { ADD_FEED_TITLE } from "../../helpers/constants";
+import { setPosts } from "../../slices/postSlice";
 
 function Feeds() {
+	const dispatch = useDispatch();
+	const posts = useSelector((state) => state.postReducer.posts);
 	const [openAddFeed, setOpenAddFeed] = useState(false);
 	const handleAddFeedOpen = () => setOpenAddFeed(true);
 	const handleAddFeedClose = () => setOpenAddFeed(false);
+
+	const fetchPosts = async () => {
+		try {
+			const res = await axios.get("http://localhost:6001/post/get");
+			dispatch(setPosts(res.data));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchPosts();
+	}, []);
+
 	return (
 		<Stack
 			sx={{
@@ -61,7 +80,7 @@ function Feeds() {
 				</Box>
 				<Divider />
 				<Stack sx={{ gap: "1rem" }}>
-					{FeedsData.map((feed) => (
+					{posts.map((feed) => (
 						<Feed data={feed} />
 					))}
 				</Stack>

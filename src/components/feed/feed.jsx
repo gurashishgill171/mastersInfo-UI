@@ -56,16 +56,16 @@ function Feed({ data }) {
 				<Stack
 					sx={{ flexDirection: "row", alignItems: "center", gap: "0.5rem" }}
 				>
-					<Avatar {...stringAvatar(data.authorName)} />
+					{/* <Avatar {...stringAvatar(data.user.email)} /> */}
 					<Stack>
 						<Typography variant="body" sx={{ fontWeight: 600 }}>
-							{data.authorName}
+							{data.user.email}
 						</Typography>
 						<Typography variant="subtitle2" sx={{ color: "#697386" }}>
-							{data.authorStage} | {data.authorIntake}
+							{data.user.currentStage} | {data.user.plannedIntake}
 						</Typography>
 						<Typography variant="subtitle2" sx={{ color: "#697386" }}>
-							{data.postedDate}
+							{data.createdAt}
 						</Typography>
 					</Stack>
 				</Stack>
@@ -74,7 +74,7 @@ function Feed({ data }) {
 				</IconButton>
 			</Stack>
 			<Stack>
-				<Typography variant="h6">{data.content}</Typography>
+				<Typography variant="h6">{data.postDescription}</Typography>
 				<Stack
 					sx={{
 						flexDirection: "row",

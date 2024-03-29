@@ -17,10 +17,11 @@ import {
 } from "../../helpers/constants";
 import PrimaryButton from "../common/primaryButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorAlert from "../common/error";
+import { addPost } from "../../slices/postSlice";
 
 const style = {
 	position: "absolute",
@@ -34,6 +35,7 @@ const style = {
 };
 
 function AddFeedPopup({ open, handleClose }) {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [postTitle, setPostTitle] = useState("");
 	const [postDescription, setPostDescription] = useState("");
@@ -64,6 +66,8 @@ function AddFeedPopup({ open, handleClose }) {
 					postDescription,
 					user: userInfo._id,
 				});
+				console.log(res);
+				dispatch(addPost(res.data.newPost));
 				handleClose();
 			} catch (error) {
 				setErrorPopup(true);
