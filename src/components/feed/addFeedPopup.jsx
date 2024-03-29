@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Modal,
 	Box,
@@ -17,6 +17,10 @@ import {
 } from "../../helpers/constants";
 import PrimaryButton from "../common/primaryButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import ErrorAlert from "../common/error";
 
 const style = {
 	position: "absolute",
@@ -25,12 +29,57 @@ const style = {
 	width: "50%",
 	transform: "translate(-50%, -50%)",
 	bgcolor: "#ffffff",
-	// border: "1px solid #000",
 	borderRadius: "8px",
 	boxShadow: 24,
 };
 
 function AddFeedPopup({ open, handleClose }) {
+	const navigate = useNavigate();
+	const [postTitle, setPostTitle] = useState("");
+	const [postDescription, setPostDescription] = useState("");
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
+	const [errors, setErrors] = useState({});
+	const [errorPopup, setErrorPopup] = useState(false);
+	const [apiError, setApiError] = useState("");
+
+	const handleCloseErrorAlert = () => {
+		setErrorPopup(false);
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		const newErrors = {};
+
+		if (postTitle == "") {
+			newErrors.title = "Please add a title";
+		}
+		if (postDescription == "") {
+			newErrors.description = "Please add a description";
+		}
+
+		if (Object.keys(newErrors).length === 0) {
+			try {
+				const res = await axios.post("http://localhost:6001/post/create", {
+					postTitle,
+					postDescription,
+					user: userInfo._id,
+				});
+				handleClose();
+			} catch (error) {
+				setErrorPopup(true);
+				setApiError(error.response.data.error);
+			}
+		} else {
+			setErrors(newErrors);
+		}
+	};
+
+	useEffect(() => {
+		if (!userInfo) {
+			navigate("/login");
+		}
+	}, []);
+
 	return (
 		<Modal
 			open={open}
@@ -60,8 +109,15 @@ function AddFeedPopup({ open, handleClose }) {
 						id="standard-basic"
 						variant="standard"
 						placeholder={ADD_FEED_POPUP_INPUT}
+						value={postTitle}
+						onChange={(e) => setPostTitle(e.target.value)}
 						InputProps={{ disableUnderline: true }}
 					/>
+					{errors.title && (
+						<Typography variant="caption" sx={{ color: "#d32f2f" }}>
+							{errors.title}
+						</Typography>
+					)}
 					<Divider />
 					<TextField
 						id="standard-multiline-static"
@@ -69,13 +125,30 @@ function AddFeedPopup({ open, handleClose }) {
 						rows={4}
 						placeholder={ADD_FEED_POPUP_DETAIL}
 						variant="standard"
+						value={postDescription}
+						onChange={(e) => setPostDescription(e.target.value)}
 						InputProps={{ disableUnderline: true }}
 					/>
+					{errors.description && (
+						<Typography variant="caption" sx={{ color: "#d32f2f" }}>
+							{errors.description}
+						</Typography>
+					)}
 				</Stack>
 				<Divider />
 				<Stack sx={{ padding: "1rem", alignItems: "flex-end" }}>
-					<PrimaryButton title={ADD_FEED_POPUP_TITLE} />
+					<PrimaryButton
+						title={ADD_FEED_POPUP_TITLE}
+						handleClick={handleSubmit}
+					/>
 				</Stack>
+				{errorPopup && (
+					<ErrorAlert
+						open={errorPopup}
+						handleClose={handleCloseErrorAlert}
+						message={apiError}
+					/>
+				)}
 			</Box>
 		</Modal>
 	);

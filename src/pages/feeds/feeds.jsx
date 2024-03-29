@@ -17,13 +17,28 @@ function Feeds() {
 				minHeight: "100vh",
 				backgroundColor: "#F6F5F3",
 				alignItems: "center",
+				flexDirection: "row",
+				overflow: "hidden",
+				gap: "1rem",
 			}}
 		>
-			<Stack
+			<Box
 				sx={{
-					maxWidth: "820px",
-					width: "100%",
+					flex: 0.3,
+					height: "100vh",
+					overflow: "auto",
+					padding: "2rem",
+				}}
+			>
+				left thing
+			</Box>
+			<Box
+				sx={{
+					flex: 0.4,
 					gap: "2rem",
+					overflowY: "auto",
+					height: "100vh",
+					padding: "2rem",
 				}}
 			>
 				<Box
@@ -50,7 +65,17 @@ function Feeds() {
 						<Feed data={feed} />
 					))}
 				</Stack>
-			</Stack>
+			</Box>
+			<Box
+				sx={{
+					flex: 0.3,
+					height: "100vh",
+					overflow: "auto",
+					padding: "2rem",
+				}}
+			>
+				right thing
+			</Box>
 		</Stack>
 	);
 }
