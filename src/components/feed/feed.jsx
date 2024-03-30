@@ -6,6 +6,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import LikeImage from "../../assets/like.png";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import { timeSince } from "../../helpers/timeSince";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -67,7 +68,7 @@ function Feed({ data }) {
 							{data.user.currentStage} | {data.user.plannedIntake}
 						</Typography>
 						<Typography variant="subtitle2" sx={{ color: "#697386" }}>
-							{data.createdAt}
+							{timeSince(data.createdAt)}
 						</Typography>
 					</Stack>
 				</Stack>
