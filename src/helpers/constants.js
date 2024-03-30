@@ -41,7 +41,11 @@ export const BASIC_DETAILS_TITLE = "Hi, let's begin!";
 export const BASIC_DETAILS_SUBTITLE =
 	"It's a one time set up, takes less than 1 min, promise";
 export const EMAIL = "Email ID";
-export const EMAIL_EXAMPLE = "eg: example@gmail.com";
+export const EMAIL_EXAMPLE = "e.g: example@gmail.com";
+export const FIRSTNAME = "First name";
+export const FIRSTNAME_EXAMPLE = "e.g: John";
+export const LASTNAME = "Last name";
+export const LASTNAME_EXAMPLE = "e.g: Doe";
 export const DEGREE_PLAN = "Degree you're planning for";
 export const COURSE_INTEREST = "Courses of interest";
 export const NEXT_BUTTON_TITLE = "Proceed To Next";

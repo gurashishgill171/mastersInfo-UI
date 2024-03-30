@@ -4,6 +4,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import AddFeedPopup from "../../components/feed/addFeedPopup";
 import Feed from "../../components/feed/feed";
 import { FeedsData } from "../../data/feeds";
@@ -11,8 +12,10 @@ import { ADD_FEED_TITLE } from "../../helpers/constants";
 import { setPosts } from "../../slices/postSlice";
 
 function Feeds() {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const posts = useSelector((state) => state.postReducer.posts);
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
 	const [openAddFeed, setOpenAddFeed] = useState(false);
 	const handleAddFeedOpen = () => setOpenAddFeed(true);
 	const handleAddFeedClose = () => setOpenAddFeed(false);
@@ -27,6 +30,9 @@ function Feeds() {
 	};
 
 	useEffect(() => {
+		if (!userInfo) {
+			navigate("/login");
+		}
 		fetchPosts();
 	}, []);
 
@@ -78,8 +84,7 @@ function Feeds() {
 						<AddFeedPopup open={openAddFeed} handleClose={handleAddFeedClose} />
 					)}
 				</Box>
-				<Divider />
-				<Stack sx={{ gap: "1rem" }}>
+				<Stack sx={{ gap: "1rem", marginTop: "2rem" }}>
 					{posts.map((feed) => (
 						<Feed data={feed} />
 					))}

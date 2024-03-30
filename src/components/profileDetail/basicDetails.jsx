@@ -23,6 +23,10 @@ import {
 	DEGREE_PLAN,
 	EMAIL,
 	EMAIL_EXAMPLE,
+	FIRSTNAME,
+	FIRSTNAME_EXAMPLE,
+	LASTNAME,
+	LASTNAME_EXAMPLE,
 	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import bachelorsImage from "../../assets/bachelors.png";
@@ -78,6 +82,8 @@ function BasicDetails() {
 	const navigate = useNavigate();
 	const userInfo = useSelector((state) => state.authReducer.userInfo);
 	const [email, setEmail] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
 	const [degree, setDegree] = useState("masters");
 	const [interestedCourses, setInterestedCourses] = useState([]);
 	const [errors, setErrors] = useState({});
@@ -103,6 +109,14 @@ function BasicDetails() {
 			newErrors.email = "Email is required";
 		}
 
+		if (!firstName.trim()) {
+			newErrors.firstName = "Please enter your first name";
+		}
+
+		if (!lastName.trim()) {
+			newErrors.lastName = "Please enter your first name";
+		}
+
 		if (interestedCourses.length == 0) {
 			newErrors.courses = "Please select atleast 1 course";
 		}
@@ -116,6 +130,8 @@ function BasicDetails() {
 				const res = await axios.post("http://localhost:6001/auth/save", {
 					phoneNumber: userInfo && userInfo.phoneNumber,
 					email: email,
+					firstName: firstName,
+					lastName: lastName,
 					isMasters: degree == "masters" ? true : false,
 					interestedCourses: interestedCourses,
 					currentStep: userInfo && userInfo.currentStep + 1,
@@ -159,6 +175,35 @@ function BasicDetails() {
 							error={Boolean(errors.email)}
 							helperText={errors.email && errors.email}
 						/>
+						<Stack
+							sx={{
+								flexDirection: "row",
+								alignItems: "center",
+								width: "100%",
+								gap: "1rem",
+							}}
+						>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label={FIRSTNAME}
+								placeholder={FIRSTNAME_EXAMPLE}
+								value={firstName}
+								onChange={(e) => setFirstName(e.target.value)}
+								error={Boolean(errors.firstName)}
+								helperText={errors.firstName && errors.firstName}
+							/>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label={LASTNAME}
+								placeholder={LASTNAME_EXAMPLE}
+								value={lastName}
+								onChange={(e) => setLastName(e.target.value)}
+								error={Boolean(errors.lastName)}
+								helperText={errors.lastName && errors.lastName}
+							/>
+						</Stack>
 						<Stack sx={{ width: "100%", gap: "1rem" }}>
 							<FormLabel
 								id="degree-plan"
