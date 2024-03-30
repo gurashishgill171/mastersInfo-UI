@@ -25,22 +25,36 @@ import {
 	GRAD_YEAR,
 	SCORE,
 	SCORE_EXAMPLE,
+	SCORE_TYPE,
 	UG_DETAILS_SUBTITLE,
 	UG_DETAILS_TITLE,
+	NEXT_BUTTON_TITLE,
 } from "../../helpers/constants";
 import SearchIcon from "@mui/icons-material/Search";
 import { ScoreTypes } from "../../data/scoreTypes";
 import axios from "axios";
+import PrimaryButton from "../common/primaryButton";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../slices/authSlice";
 
 function UGDetails() {
+	const dispatch = useDispatch();
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
 	const [query, setQuery] = useState("");
 	const [college, setCollege] = useState("");
 	const [course, setCourse] = useState("");
 	const [scoreType, setScoreType] = useState("");
 	const [score, setScore] = useState("");
 	const [gradYear, setGradYear] = useState("");
-	const [backlogs, setBacklogs] = useState("");
+	const [backlogs, setBacklogs] = useState(0);
 	const [colleges, setColleges] = useState([]);
+	const [errors, setErrors] = useState({});
+	const [errorPopup, setErrorPopup] = useState(false);
+	const [apiError, setApiError] = useState("");
+
+	const handleCloseErrorAlert = () => {
+		setErrorPopup(false);
+	};
 
 	const fetchColleges = async () => {
 		try {
@@ -61,6 +75,53 @@ function UGDetails() {
 		setCollege(college.name);
 		setQuery("");
 		setColleges([]);
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		const newErrors = {};
+		if (!college.trim()) {
+			newErrors.college = "Please select your college";
+		}
+
+		if (!course.trim()) {
+			newErrors.course = "Please enter your course name";
+		}
+
+		if (!scoreType.trim()) {
+			newErrors.scoreType = "Please select your performance matrix";
+		}
+
+		if (!score.trim()) {
+			newErrors.score = "Please enter your score";
+		}
+
+		if (!gradYear.trim()) {
+			newErrors.gradYear = "Please enter your graduation year";
+		}
+
+		if (Object.keys(newErrors).length === 0) {
+			try {
+				const res = await axios.post("http://localhost:6001/auth/save", {
+					phoneNumber: userInfo && userInfo.phoneNumber,
+					ugInfo: {
+						college,
+						course,
+						score: score + scoreType,
+						graduationYear: gradYear,
+						backlogs,
+					},
+					currentStep: userInfo && userInfo.currentStep + 1,
+				});
+				dispatch(setCredentials(res.data.user));
+			} catch (error) {
+				setErrorPopup(true);
+				setApiError(error.response.data.error);
+			}
+		} else {
+			setErrors(newErrors);
+		}
 	};
 
 	useEffect(() => {
@@ -99,6 +160,8 @@ function UGDetails() {
 							placeholder={COLLEGE_EXAMPLE}
 							value={college ? college : query}
 							onChange={(e) => setQuery(e.target.value)}
+							error={Boolean(errors.college)}
+							helperText={errors.college && errors.college}
 							InputProps={{
 								startAdornment: (
 									<InputAdornment position="start">
@@ -124,14 +187,11 @@ function UGDetails() {
 						variant="outlined"
 						label={COURSE_NAME}
 						placeholder={COURSE_EXAMPLE}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<SearchIcon />
-								</InputAdornment>
-							),
-						}}
+						value={course}
+						onChange={(e) => setCourse(e.target.value)}
 						sx={{ width: "100%" }}
+						error={Boolean(errors.course)}
+						helperText={errors.course && errors.course}
 					/>
 				</Stack>
 				<Stack
@@ -142,40 +202,40 @@ function UGDetails() {
 						gap: "2rem",
 					}}
 				>
-					<TextField
-						id="score"
-						variant="outlined"
-						label={SCORE}
-						placeholder={SCORE_EXAMPLE}
-						value={score}
-						onChange={(e) => setScore(e.target.value)}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<Select
-										variant="standard"
-										margin="normal"
-										labelId="score"
-										id="score_type"
-										value={scoreType}
-										onChange={handleScoreTypeChange}
-										sx={{ width: "100%" }}
-									>
-										{ScoreTypes.map((type) => (
-											<MenuItem key={type.id} value={type.type}>
-												{type.type}
-											</MenuItem>
-										))}
-									</Select>
-								</InputAdornment>
-							),
-						}}
-						sx={{ width: "100%" }}
-					/>
+					<Stack sx={{ flexDirection: "row", width: "100%" }}>
+						<Select
+							id="score_type"
+							labelId="demo-simple-select-helper-label"
+							label={SCORE_TYPE}
+							// value={scoreType}
+							onChange={handleScoreTypeChange}
+							sx={{ width: "100%" }}
+							defaultValue={"CGPA"}
+						>
+							{ScoreTypes.map((type) => (
+								<MenuItem key={type.id} value={type.type}>
+									{type.type}
+								</MenuItem>
+							))}
+						</Select>
+						<TextField
+							fullWidth
+							id="score"
+							variant="outlined"
+							label={SCORE}
+							placeholder={SCORE_EXAMPLE}
+							value={score}
+							onChange={(e) => setScore(e.target.value)}
+							error={Boolean(errors.score)}
+							helperText={errors.score && errors.score}
+						/>
+					</Stack>
 					<TextField
 						variant="outlined"
 						label={GRAD_YEAR}
 						placeholder={GRAD_EXAMPLE}
+						value={gradYear}
+						onChange={(e) => setGradYear(e.target.value)}
 						sx={{ width: "100%" }}
 					/>
 				</Stack>
@@ -184,8 +244,13 @@ function UGDetails() {
 						variant="outlined"
 						label={BACKLOGS}
 						placeholder={BACKLOGS_EXAMPLE}
+						value={backlogs}
+						onChange={(e) => setBacklogs(e.target.value)}
 						sx={{ width: "50%" }}
 					/>
+				</Stack>
+				<Stack sx={{ width: "100%", alignItems: "flex-end" }}>
+					<PrimaryButton title={NEXT_BUTTON_TITLE} handleClick={handleSubmit} />
 				</Stack>
 			</Stack>
 		</>
