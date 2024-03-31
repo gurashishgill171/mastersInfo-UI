@@ -1,12 +1,21 @@
 /** @format */
 
-import { Avatar, Divider, IconButton, Stack, Typography } from "@mui/material";
-import React from "react";
+import {
+	Avatar,
+	Box,
+	Divider,
+	IconButton,
+	Stack,
+	Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import LikeImage from "../../assets/like.png";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import { timeSince } from "../../helpers/timeSince";
+import CommentSection from "./commentSection";
+import Comment from "./comment";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -36,6 +45,7 @@ function stringAvatar(name) {
 }
 
 function Feed({ data }) {
+	const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
 	return (
 		<Stack
 			sx={{
@@ -118,11 +128,20 @@ function Feed({ data }) {
 					<ThumbUpOutlinedIcon />
 					<Typography>Like</Typography>
 				</Stack>
-				<Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+				<Box
+					sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+					onClick={() => setIsCommentSectionOpen(!isCommentSectionOpen)}
+				>
 					<ChatOutlinedIcon />
 					<Typography>Comment</Typography>
-				</Stack>
+				</Box>
 			</Stack>
+			{isCommentSectionOpen && <CommentSection data={data} />}
+			{isCommentSectionOpen &&
+				data.comments.map((comment) => (
+					// <Typography key={comment._id}>{comment.comment}</Typography>
+					<Comment key={comment._id} comment={comment} />
+				))}
 		</Stack>
 	);
 }
