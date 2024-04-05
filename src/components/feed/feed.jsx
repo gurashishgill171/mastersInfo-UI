@@ -8,7 +8,7 @@ import {
 	Stack,
 	Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import LikeImage from "../../assets/like.png";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
@@ -16,6 +16,9 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import { timeSince } from "../../helpers/timeSince";
 import CommentSection from "./commentSection";
 import Comment from "./comment";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePost } from "../../slices/postSlice";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -46,6 +49,28 @@ function stringAvatar(name) {
 
 function Feed({ data }) {
 	const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
+	const [isFeedLikedByCurrentUser, setIsFeedLikedByCurrentUser] = useState(
+		data.likedBy.includes(userInfo._id)
+	);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		setIsFeedLikedByCurrentUser(data.likedBy.includes(userInfo._id));
+	}, [data.likedBy, userInfo._id]);
+
+	const handleFeedLike = async () => {
+		try {
+			const res = await axios.post(
+				`http://localhost:6001/post/${data._id}/like`,
+				{ userId: userInfo._id }
+			);
+			dispatch(updatePost(res.data.post));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<Stack
 			sx={{
@@ -124,12 +149,29 @@ function Feed({ data }) {
 			</Stack>
 			<Divider />
 			<Stack sx={{ flexDirection: "row", alignItems: "center", gap: "2rem" }}>
-				<Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-					<ThumbUpOutlinedIcon />
-					<Typography>Like</Typography>
-				</Stack>
 				<Box
-					sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+						gap: "0.2rem",
+					}}
+					onClick={handleFeedLike}
+				>
+					<ThumbUpOutlinedIcon
+						sx={{ color: isFeedLikedByCurrentUser && "#2191EC" }}
+					/>
+					<Typography sx={{ color: isFeedLikedByCurrentUser && "#2191EC" }}>
+						Like
+					</Typography>
+				</Box>
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+						gap: "0.2rem",
+					}}
 					onClick={() => setIsCommentSectionOpen(!isCommentSectionOpen)}
 				>
 					<ChatOutlinedIcon />
@@ -139,7 +181,6 @@ function Feed({ data }) {
 			{isCommentSectionOpen && <CommentSection data={data} />}
 			{isCommentSectionOpen &&
 				data.comments.map((comment) => (
-					// <Typography key={comment._id}>{comment.comment}</Typography>
 					<Comment key={comment._id} comment={comment} />
 				))}
 		</Stack>

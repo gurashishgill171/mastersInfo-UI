@@ -40,16 +40,18 @@ function CommentSection({ data }) {
 	const [comment, setComment] = useState("");
 
 	const handleSubmit = async () => {
-		try {
-			const res = await axios.post("http://localhost:6001/post/update", {
-				postId: data._id,
-				comment,
-				userId: data.user._id,
-			});
-			setComment("");
-			dispatch(updatePost(res.data.post));
-		} catch (error) {
-			console.log(error);
+		if (comment != "") {
+			try {
+				const res = await axios.post("http://localhost:6001/post/update", {
+					postId: data._id,
+					comment,
+					userId: data.user._id,
+				});
+				setComment("");
+				dispatch(updatePost(res.data.post));
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
 	return (
@@ -74,7 +76,6 @@ function CommentSection({ data }) {
 				/>
 				<PrimaryButton title={ADD_COMMENT} handleClick={handleSubmit} />
 			</Stack>
-			<Stack></Stack>
 		</Stack>
 	);
 }
