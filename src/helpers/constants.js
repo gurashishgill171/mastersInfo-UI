@@ -109,3 +109,23 @@ export const SKILLS_SUBTITLE =
 	"Show your fellow aspirants that relevant skills are important for a profile to get an admit!";
 export const SKILLS_INPUT = "Skills";
 export const SKILLS_EXAMPLE = "E.g: Graphic Designer";
+
+// work experience form
+export const EXPERIENCE_TITLE = "Let the experience speak!";
+export const EXPERIENCE_SUBTITLE =
+	"Let other aspirants know that experience can make admits happen!";
+export const EXPERIENCE_TRUE = "I have work experience";
+export const EXPERIENCE_FALSE = "I don't have work experience";
+export const POSITION = "Job position";
+export const POSITION_EXAMPLE = "Software Engineer";
+export const ORGANISATION = "Organisation";
+export const ORGANISATION_EXAMPLE = "Microsoft";
+export const NATURE_JOB = "Nature of job";
+export const FULL_TIME = "Full time";
+export const PART_TIME = "Part time";
+export const INTERNSHIP = "Internship";
+export const CURRENTLY_WORKING = "I currently work in this role";
+export const START_DATE = "Start Date";
+export const END_DATE = "End Date";
+export const JD = "Job description";
+export const JD_EXAMPLE = "Describe Type of work you did";

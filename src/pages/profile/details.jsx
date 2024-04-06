@@ -8,6 +8,7 @@ import AptitudeScores from "../../components/profileDetail/aptitudeScores";
 import BasicDetails from "../../components/profileDetail/basicDetails";
 import CurrentStage from "../../components/profileDetail/currentStage";
 import EnglishScores from "../../components/profileDetail/englishScores";
+import Experience from "../../components/profileDetail/experience";
 import IntakeDetails from "../../components/profileDetail/intakeDetails";
 import SkillDetails from "../../components/profileDetail/skillDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
@@ -38,6 +39,8 @@ function ProfileDetails() {
 				return <AptitudeScores />;
 			case 6:
 				return <SkillDetails />;
+			case 7:
+				return <Experience />;
 			default:
 				break;
 		}

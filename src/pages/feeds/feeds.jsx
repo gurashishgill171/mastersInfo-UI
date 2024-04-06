@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AddFeedPopup from "../../components/feed/addFeedPopup";
 import Feed from "../../components/feed/feed";
-import { FeedsData } from "../../data/feeds";
 import { ADD_FEED_TITLE } from "../../helpers/constants";
 import { setPosts } from "../../slices/postSlice";
 
@@ -44,7 +43,6 @@ function Feeds() {
 				alignItems: "center",
 				flexDirection: "row",
 				overflow: "hidden",
-				gap: "1rem",
 			}}
 		>
 			<Box
@@ -63,7 +61,8 @@ function Feeds() {
 					gap: "2rem",
 					overflowY: "auto",
 					height: "100vh",
-					padding: "2rem",
+					paddingTop: "2rem",
+					paddingBottom: "2rem",
 				}}
 			>
 				<Box
