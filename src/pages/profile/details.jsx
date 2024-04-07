@@ -10,6 +10,7 @@ import CurrentStage from "../../components/profileDetail/currentStage";
 import EnglishScores from "../../components/profileDetail/englishScores";
 import Experience from "../../components/profileDetail/experience";
 import IntakeDetails from "../../components/profileDetail/intakeDetails";
+import ProjectDetails from "../../components/profileDetail/projectDetails";
 import SkillDetails from "../../components/profileDetail/skillDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
 import UGDetails from "../../components/profileDetail/ugDetails";
@@ -41,6 +42,8 @@ function ProfileDetails() {
 				return <SkillDetails />;
 			case 7:
 				return <Experience />;
+			case 8:
+				return <ProjectDetails />;
 			default:
 				break;
 		}

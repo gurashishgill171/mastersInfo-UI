@@ -129,3 +129,19 @@ export const START_DATE = "Start Date";
 export const END_DATE = "End Date";
 export const JD = "Job description";
 export const JD_EXAMPLE = "Describe Type of work you did";
+
+// projects form
+export const PROJECT_TITLE = "Take us through your projects!";
+export const PROJECT_SUBTITLE =
+	"Having relevant projects added to your profile always give you an edge!";
+export const PROJECT_TRUE = "I have some projects";
+export const PROJECT_FALSE = "I don't have any project";
+export const TITLE = "Project title";
+export const TITLE_EXAMPLE = "Enter your project title";
+export const PROJECT_DURATION = "Duration in months";
+export const PROJECT_URL = "Project URL (optional)";
+export const PROJECT_URL_EXAMPLE = "Project URL to showcase";
+export const TEAM_SIZE = "Team size";
+export const TEAM_SIZE_EXAMPLE = "Number of members";
+export const PROJECT_DESCRIPTION = "Project description";
+export const PROJECT_DESCRIPTION_EXAMPLE = "Describe type of project you did";
