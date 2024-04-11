@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AptitudeScores from "../../components/profileDetail/aptitudeScores";
 import BasicDetails from "../../components/profileDetail/basicDetails";
+import Completed from "../../components/profileDetail/completed";
 import CurrentStage from "../../components/profileDetail/currentStage";
 import EnglishScores from "../../components/profileDetail/englishScores";
 import Experience from "../../components/profileDetail/experience";
 import IntakeDetails from "../../components/profileDetail/intakeDetails";
 import ProjectDetails from "../../components/profileDetail/projectDetails";
+import ResearchDetails from "../../components/profileDetail/researchDetails";
 import SkillDetails from "../../components/profileDetail/skillDetails";
 import DetailsSteps from "../../components/profileDetail/stepper";
 import UGDetails from "../../components/profileDetail/ugDetails";
@@ -44,6 +46,10 @@ function ProfileDetails() {
 				return <Experience />;
 			case 8:
 				return <ProjectDetails />;
+			case 9:
+				return <ResearchDetails />;
+			case 10:
+				return <Completed />;
 			default:
 				break;
 		}

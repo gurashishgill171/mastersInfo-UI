@@ -3,7 +3,7 @@
 import { Avatar, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ADD_COMMENT, COMMENT } from "../../helpers/constants";
 import { updatePost } from "../../slices/postSlice";
 import PrimaryButton from "../common/primaryButton";
@@ -38,6 +38,7 @@ function stringAvatar(name) {
 function CommentSection({ data }) {
 	const dispatch = useDispatch();
 	const [comment, setComment] = useState("");
+	const userInfo = useSelector((state) => state.authReducer.userInfo);
 
 	const handleSubmit = async () => {
 		if (comment != "") {
@@ -45,7 +46,7 @@ function CommentSection({ data }) {
 				const res = await axios.post("http://localhost:6001/post/update", {
 					postId: data._id,
 					comment,
-					userId: data.user._id,
+					userId: userInfo._id,
 				});
 				setComment("");
 				dispatch(updatePost(res.data.post));

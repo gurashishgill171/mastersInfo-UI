@@ -38,10 +38,6 @@ export const Steps = [
 		title: "Projects",
 	},
 	{
-		id: 12,
-		title: "Basic Infromation",
-	},
-	{
 		id: 13,
 		title: "Research",
 	},

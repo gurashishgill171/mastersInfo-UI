@@ -145,3 +145,15 @@ export const TEAM_SIZE = "Team size";
 export const TEAM_SIZE_EXAMPLE = "Number of members";
 export const PROJECT_DESCRIPTION = "Project description";
 export const PROJECT_DESCRIPTION_EXAMPLE = "Describe type of project you did";
+
+// research form
+export const RESEARCH_TITLE = "Your hand in research";
+export const RESEARCH_SUBTITLE =
+	"Let your fellow aspirants know that relevant research can help getting an admit.";
+export const RESEARCH_TRUE = "I’ve done some research";
+export const RESEARCH_FALSE = "I’ve not done any research";
+export const PAPER_TITLE = "Paper title";
+export const PAPER_TITLE_EXAMPLE = "Type a title";
+export const PUBLICATION_LEVEL = "Publication level";
+export const RESEARCH_DESCRIPTION = "Description";
+export const RESEARCH_DESCRIPTION_EXAMPLE = "Describe type of research you did";
