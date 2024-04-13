@@ -3,7 +3,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-function PrimaryButton({ title, isDisabled, handleClick, isLoading }) {
+function PrimaryButton({ title, isDisabled, handleClick, isLoading, icon }) {
 	return (
 		<Button
 			disabled={isDisabled || isLoading}
@@ -18,6 +18,7 @@ function PrimaryButton({ title, isDisabled, handleClick, isLoading }) {
 				},
 			}}
 			onClick={handleClick}
+			endIcon={icon}
 		>
 			{!isLoading ? title : "LOADING..."}
 		</Button>
