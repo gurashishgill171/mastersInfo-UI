@@ -75,11 +75,12 @@ function Feed({ data }) {
 		<Stack
 			sx={{
 				backgroundColor: "#FFFFFF",
-				border: "1px solid rgb(107 114 128)",
 				borderRadius: "8px",
 				cursor: "pointer",
 				padding: "1rem",
 				gap: "1rem",
+				boxShadow:
+					"rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px",
 			}}
 		>
 			<Stack

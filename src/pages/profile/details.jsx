@@ -62,7 +62,7 @@ function ProfileDetails() {
 	}, []);
 
 	return (
-		<Stack sx={{ minHeight: "100vh" }}>
+		<Stack sx={{ minHeight: "100vh", paddingTop: "2rem" }}>
 			<DetailsSteps currentStep={userInfo && userInfo.currentStep} />
 			<Stack
 				sx={{

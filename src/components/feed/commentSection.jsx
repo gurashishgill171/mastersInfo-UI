@@ -66,7 +66,7 @@ function CommentSection({ data }) {
 				}}
 			>
 				<Avatar
-					{...stringAvatar(data.user.firstName + " " + data.user.lastName)}
+					{...stringAvatar(userInfo.firstName + " " + userInfo.lastName)}
 				/>
 				<TextField
 					fullWidth

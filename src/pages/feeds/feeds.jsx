@@ -68,11 +68,12 @@ function Feeds() {
 				<Box
 					sx={{
 						backgroundColor: "#ffffff",
-						border: "1px solid rgb(107 114 128)",
 						borderRadius: "8px",
 						padding: "2rem",
 						justifyContent: "center",
 						cursor: "pointer",
+						boxShadow:
+							"rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px",
 					}}
 					onClick={handleAddFeedOpen}
 				>
@@ -83,7 +84,7 @@ function Feeds() {
 						<AddFeedPopup open={openAddFeed} handleClose={handleAddFeedClose} />
 					)}
 				</Box>
-				<Stack sx={{ gap: "1rem", marginTop: "2rem" }}>
+				<Stack sx={{ gap: "2rem", marginTop: "2rem" }}>
 					{posts.map((feed) => (
 						<Feed data={feed} />
 					))}

@@ -12,6 +12,7 @@ import Navbar from "./components/navbar/navbar";
 function App() {
 	return (
 		<Router>
+			<Navbar />
 			<Routes>
 				<Route path="/feeds" element={<Feeds />} />
 				<Route path="/profile" element={<Profile />} />
