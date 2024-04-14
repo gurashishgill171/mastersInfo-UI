@@ -8,6 +8,7 @@ import LoginPage from "./pages/auth/login";
 import ProfileDetails from "./pages/profile/details";
 import Feeds from "./pages/feeds/feeds";
 import Navbar from "./components/navbar/navbar";
+import MessagePage from "./pages/message/message";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 				<Route path="/universities" element={<Universities />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/profile/details" element={<ProfileDetails />} />
+				<Route path="/messages" element={<MessagePage />} />
 			</Routes>
 		</Router>
 	);
