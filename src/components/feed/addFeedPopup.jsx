@@ -6,15 +6,11 @@ import {
 	Box,
 	Typography,
 	Stack,
-	TextField,
 	Divider,
 	IconButton,
+	Button,
 } from "@mui/material";
-import {
-	ADD_FEED_POPUP_DETAIL,
-	ADD_FEED_POPUP_INPUT,
-	ADD_FEED_POPUP_TITLE,
-} from "../../helpers/constants";
+import { ADD_FEED_POPUP_TITLE } from "../../helpers/constants";
 import PrimaryButton from "../common/primaryButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +18,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorAlert from "../common/error";
 import { addPost } from "../../slices/postSlice";
+import { Editor } from "primereact/editor";
+import { CloudUpload } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+
+const VisuallyHiddenInput = styled("input")({
+	clip: "rect(0 0 0 0)",
+	clipPath: "inset(50%)",
+	height: 1,
+	overflow: "hidden",
+	position: "absolute",
+	bottom: 0,
+	left: 0,
+	whiteSpace: "nowrap",
+	width: 1,
+});
 
 const style = {
 	position: "absolute",
@@ -37,8 +48,9 @@ const style = {
 function AddFeedPopup({ open, handleClose }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const [postTitle, setPostTitle] = useState("");
 	const [postDescription, setPostDescription] = useState("");
+	const [image, setImage] = useState(null);
+	const [imageError, setImageError] = useState(false);
 	const userInfo = useSelector((state) => state.authReducer.userInfo);
 	const [errors, setErrors] = useState({});
 	const [errorPopup, setErrorPopup] = useState(false);
@@ -48,25 +60,40 @@ function AddFeedPopup({ open, handleClose }) {
 		setErrorPopup(false);
 	};
 
+	const handleImage = (e) => {
+		const file = e.target.files[0];
+		const size = e.target.files[0].size;
+		if (size >= 5e6) {
+			setImageError(true);
+		} else {
+			setImageError(false);
+		}
+		setFiletoBase(file);
+	};
+
+	const setFiletoBase = (file) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			setImage(reader.result);
+		};
+	};
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const newErrors = {};
 
-		if (postTitle == "") {
-			newErrors.title = "Please add a title";
-		}
-		if (postDescription == "") {
+		if (!postDescription) {
 			newErrors.description = "Please add a description";
 		}
 
-		if (Object.keys(newErrors).length === 0) {
+		if (Object.keys(newErrors).length === 0 && !imageError) {
 			try {
 				const res = await axios.post("http://localhost:6001/post/create", {
-					postTitle,
 					postDescription,
 					user: userInfo._id,
+					image,
 				});
-				console.log(res);
 				dispatch(addPost(res.data.newPost));
 				handleClose();
 			} catch (error) {
@@ -109,34 +136,34 @@ function AddFeedPopup({ open, handleClose }) {
 					</IconButton>
 				</Stack>
 				<Stack sx={{ padding: "1rem", gap: "1rem" }}>
-					<TextField
-						id="standard-basic"
-						variant="standard"
-						placeholder={ADD_FEED_POPUP_INPUT}
-						value={postTitle}
-						onChange={(e) => setPostTitle(e.target.value)}
-						InputProps={{ disableUnderline: true }}
-					/>
-					{errors.title && (
-						<Typography variant="caption" sx={{ color: "#d32f2f" }}>
-							{errors.title}
-						</Typography>
-					)}
-					<Divider />
-					<TextField
-						id="standard-multiline-static"
-						multiline
-						rows={4}
-						placeholder={ADD_FEED_POPUP_DETAIL}
-						variant="standard"
+					<Editor
 						value={postDescription}
-						onChange={(e) => setPostDescription(e.target.value)}
-						InputProps={{ disableUnderline: true }}
+						onTextChange={(e) => setPostDescription(e.htmlValue)}
+						style={{ height: "320px" }}
 					/>
 					{errors.description && (
 						<Typography variant="caption" sx={{ color: "#d32f2f" }}>
 							{errors.description}
 						</Typography>
+					)}
+
+					<Button
+						component="label"
+						role={undefined}
+						variant="contained"
+						tabIndex={-1}
+						startIcon={<CloudUpload />}
+					>
+						Upload Image
+						<VisuallyHiddenInput type="file" onChange={handleImage} />
+					</Button>
+					{imageError && (
+						<Typography variant="caption" sx={{ color: "#d32f2f" }}>
+							File size should be less than 5MB
+						</Typography>
+					)}
+					{!imageError && image && (
+						<img src={image} style={{ height: "60px", width: "60px" }} />
 					)}
 				</Stack>
 				<Divider />

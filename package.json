@@ -18,6 +18,8 @@
 		"faker": "^6.6.6",
 		"mui-one-time-password-input": "^2.0.2",
 		"mui-tel-input": "^5.1.2",
+		"primereact": "^10.6.3",
+		"quill": "^2.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-phone-number-input": "^3.3.9",

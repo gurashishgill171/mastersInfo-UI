@@ -29,7 +29,7 @@ function MessagePage() {
 				<Stack
 					sx={{
 						flex: 0.3,
-						maxHeight: "calc(100vh - 100px)",
+						maxHeight: "90vh",
 						overflowY: "auto",
 					}}
 				>
@@ -58,15 +58,19 @@ function MessagePage() {
 				<Stack
 					sx={{
 						flex: 0.7,
-						maxHeight: "calc(100vh - 100px)",
-						overflowY: "auto",
 						border: "0.1px solid #697386",
 						borderRadius: "8px",
 						padding: "1rem",
 						position: "relative",
 					}}
 				>
-					<Stack sx={{ gap: "1rem" }}>
+					<Stack
+						sx={{
+							gap: "1rem",
+							maxHeight: "calc(90vh - 100px)",
+							overflowY: "auto",
+						}}
+					>
 						{Chat_History.map((chat, index) => (
 							<Chat key={index} chat={chat} />
 						))}
@@ -75,6 +79,8 @@ function MessagePage() {
 						sx={{
 							flexDirection: "row",
 							alignItems: "center",
+							height: "100px",
+							backgroundColor: "#FFFFFF",
 							zIndex: 999,
 							position: "absolute",
 							bottom: "1rem",
@@ -83,12 +89,7 @@ function MessagePage() {
 							gap: "0.5rem",
 						}}
 					>
-						<TextField
-							label="Type your message"
-							variant="outlined"
-							fullWidth
-							sx={{ backgroundColor: "#FFFFFF" }}
-						/>
+						<TextField label="Type your message" variant="outlined" fullWidth />
 						<PrimaryButton title={"Send"} />
 					</Stack>
 				</Stack>

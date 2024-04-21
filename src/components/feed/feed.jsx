@@ -53,11 +53,26 @@ function Feed({ data }) {
 	const [isFeedLikedByCurrentUser, setIsFeedLikedByCurrentUser] = useState(
 		data.likedBy.includes(userInfo._id)
 	);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setIsFeedLikedByCurrentUser(data.likedBy.includes(userInfo._id));
 	}, [data.likedBy, userInfo._id]);
+
+	const toggleExpanded = () => {
+		setIsExpanded(!isExpanded);
+	};
+
+	const style = isExpanded
+		? {}
+		: {
+				display: "-webkit-box",
+				WebkitBoxOrient: "vertical",
+				WebkitLineClamp: 3,
+				overflow: "hidden",
+				textOverflow: "ellipsis",
+		  };
 
 	const handleFeedLike = async () => {
 		try {
@@ -97,7 +112,7 @@ function Feed({ data }) {
 						{...stringAvatar(data.user.firstName + " " + data.user.lastName)}
 					/>
 					<Stack>
-						<Typography variant="body" sx={{ fontWeight: 600 }}>
+						<Typography variant="body1" sx={{ fontWeight: 600 }}>
 							{data.user.firstName + " " + data.user.lastName}
 						</Typography>
 						<Typography variant="subtitle2" sx={{ color: "#697386" }}>
@@ -113,10 +128,26 @@ function Feed({ data }) {
 				</IconButton>
 			</Stack>
 			<Stack>
-				<Typography variant="h6" sx={{ fontWeight: 600 }}>
-					{data.postTitle}
+				<div
+					dangerouslySetInnerHTML={{ __html: data.postDescription }}
+					style={style}
+				/>
+				<Typography
+					onClick={toggleExpanded}
+					sx={{ color: "#E37712", textDecoration: "underline" }}
+				>
+					{isExpanded ? "Less" : "More"}
 				</Typography>
-				<Typography variant="body">{data.postDescription}</Typography>
+				{data.postImage.url !== null && (
+					<Stack style={{ height: "480px" }}>
+						<img
+							src={data.postImage.url}
+							alt="postImage"
+							style={{ width: "100%", height: "100%", objectFit: "contain" }}
+						/>
+					</Stack>
+				)}
+
 				<Stack
 					sx={{
 						flexDirection: "row",
@@ -135,14 +166,14 @@ function Feed({ data }) {
 						<img
 							src={LikeImage}
 							alt="like"
-							style={{ height: "30px", width: "30px" }}
+							style={{ height: "25px", width: "25px" }}
 						/>
-						<Typography variant="h6" sx={{ color: "#697786" }}>
+						<Typography variant="body1" sx={{ color: "#697786" }}>
 							{data.likes}
 						</Typography>
 					</Stack>
 					<Stack>
-						<Typography variant="h6" sx={{ color: "#697786" }}>
+						<Typography variant="body1" sx={{ color: "#697786" }}>
 							{data.comments.length} comment
 						</Typography>
 					</Stack>
@@ -150,7 +181,7 @@ function Feed({ data }) {
 			</Stack>
 			<Divider />
 			<Stack sx={{ flexDirection: "row", alignItems: "center", gap: "2rem" }}>
-				<Box
+				<IconButton
 					sx={{
 						display: "flex",
 						flexDirection: "row",
@@ -165,8 +196,8 @@ function Feed({ data }) {
 					<Typography sx={{ color: isFeedLikedByCurrentUser && "#2191EC" }}>
 						Like
 					</Typography>
-				</Box>
-				<Box
+				</IconButton>
+				<IconButton
 					sx={{
 						display: "flex",
 						flexDirection: "row",
@@ -177,7 +208,7 @@ function Feed({ data }) {
 				>
 					<ChatOutlinedIcon />
 					<Typography>Comment</Typography>
-				</Box>
+				</IconButton>
 			</Stack>
 			{isCommentSectionOpen && <CommentSection data={data} />}
 			{isCommentSectionOpen &&
